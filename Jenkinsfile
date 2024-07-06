@@ -6,9 +6,8 @@ pipeline {
     }
 
     environment {
-        DOCKER_CREDENTIALS_ID = 'docker-credentials-id'
         AWS_CREDENTIALS_ID = 'aws-credentials-id'
-        DOCKER_IMAGE = 'public.ecr.aws/e8n4i2w8/trial:latest'
+        DOCKER_IMAGE = 'public.ecr.aws/e8n4i2w8/backend:latest'
         AWS_REGION = 'us-east-1'
     }
 
