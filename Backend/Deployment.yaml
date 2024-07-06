@@ -1,0 +1,86 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  labels:
+    app: backend
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+      - name: backend-container
+        image: public.ecr.aws/e8n4i2w8/backend:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+        securityContext:  
+          privileged: false 
+          allowPrivilegeEscalation: false       
+          readOnlyRootFilesystem: true
+          runAsUser: 1005  
+          runAsNonRoot: true
+        env:
+        - name: SPRING_DATASOURCE_URL
+          valueFrom:
+            configMapKeyRef:
+              name: backend-configmap
+              key: spring.datasource.url
+        - name: SPRING_DATASOURCE_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: backend-configmap
+              key: spring.datasource.username
+        - name: SPRING_DATASOURCE_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: backend-secret
+              key: spring.datasource.password
+        volumeMounts:
+        - name: temp
+          mountPath: /tmp
+        resources:
+          limits:
+            memory: "1000Mi"
+            cpu: "1000m"
+          requests:
+            memory: "500Mi"
+            cpu: "100m"
+        readinessProbe:
+          httpGet:
+            scheme: HTTP
+            path: /health
+            port: 8080
+          initialDelaySeconds: 15
+          periodSeconds: 5
+        livenessProbe:
+          successThreshold: 1
+          failureThreshold: 5
+          periodSeconds: 15 
+          initialDelaySeconds: 20
+          timeoutSeconds: 5
+          httpGet:
+            path: /health
+            port: 8080
+            scheme: HTTP
+      # nodeSelector:
+      #   application: "backend"
+      # tolerations:
+      # - key: "application"
+      #   operator: "Equal"
+      #   value: "backend"
+      #   effect: "NoSchedule"
+      volumes:
+      - name: temp
+        emptyDir: {}
