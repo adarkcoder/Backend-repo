@@ -90,6 +90,7 @@ pipeline {
                         withKubeCredentials(kubectlCredentials: [[caCertificate: '', clusterName: '', contextName: '', credentialsId: 'kube-config', namespace: '', serverUrl: '']]) {
                             withCredentials([usernamePassword(credentialsId: AWS_CREDENTIALS_ID, usernameVariable: 'AWS_ACCESS_KEY_ID', passwordVariable: 'AWS_SECRET_ACCESS_KEY')]) {
                                 sh 'kubectl apply -f .'
+                                sh 'kubectl rollout restart deploy backend'
                             }
                         }
                     }
