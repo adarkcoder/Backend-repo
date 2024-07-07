@@ -34,15 +34,18 @@ pipeline {
         }
 
         stage('SonarQube - SAST') {
+            environment {
+                scannerHome = tool 'sonar-scanner'
+            }
             steps {
                 // Run SonarQube analysis after build and test
                 dir('FullStackApp') {
                     script {
                         withSonarQubeEnv('Sonar') {
-                            sh '''mvn sonar:sonar \
-                                -Dsonar.projectKey=numeric-application \
-                                -Dsonar.host.url=http://sonarqube.default.svc.cluster.local/'''
-                            
+                            sh '''${scannerHome}/bin/sonar-scanner \
+                                -Dsonar.projectKey=Backend-project \
+                                -Dsonar.projectName=Backend-project \
+                                -Dsonar.host.url=http://sonarqube.default.svc.cluster.local/'''  
                         }
                     }
                 }
@@ -97,8 +100,10 @@ pipeline {
 
     post {
         always {
-            junit 'target/surefire-reports/*.xml'
-            jacoco execPattern: 'target/jacoco.exec'
+            dir('Backend'){
+                junit 'target/surefire-reports/*.xml'
+                jacoco execPattern: 'target/jacoco.exec'
+            }
             cleanWs()
         }
     }
