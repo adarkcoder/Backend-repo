@@ -12,6 +12,14 @@ pipeline {
     }
 
     stages {
+
+        stage('Clean Workspace') {
+            steps {
+                cleanWs()
+            }
+        }
+
+        
         stage('Checkout') {
             steps {
                 git 'https://github.com/adarkcoder/Backend-repo.git'
@@ -109,7 +117,6 @@ pipeline {
                 junit 'target/surefire-reports/*.xml'
                 jacoco execPattern: 'target/jacoco.exec'
             }
-            cleanWs()
         }
     }
 }
