@@ -45,6 +45,11 @@ pipeline {
                             sh '''${scannerHome}/bin/sonar-scanner \
                                 -Dsonar.projectKey=Backend-project \
                                 -Dsonar.projectName=Backend-project \
+                                -Dsonar.sources=src/main/java \
+                                -Dsonar.tests=src/test/java/com/ \
+                                -Dsonar.java.binaries=target/test-classes/ \
+                                -Dsonar.junit.reportsPath=target/surefire-reports/ \
+                                -Dsonar.jacoco.reportsPath=target/coverage-reports/jacoco-ut.exec \
                                 -Dsonar.host.url=http://sonarqube.default.svc.cluster.local/'''  
                         }
                     }
