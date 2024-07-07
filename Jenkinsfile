@@ -114,7 +114,7 @@ pipeline {
     post {
         always {
             dir('FullStackApp'){
-                junit 'target/surefire-reports/TEST-com/arjuncodes/studentsystem/StudentsystemApplicationTests.xml'
+                junit 'target/surefire-reports/TEST-com.arjuncodes.studentsystem.StudentsystemApplicationTests.xml'
                 jacoco execPattern: 'target/jacoco.exec'
             }
         }
