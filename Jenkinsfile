@@ -31,11 +31,8 @@ pipeline {
             steps {
                 // Run Maven clean and test phases with error handling
                 dir('FullStackApp') {
-                    script {
-                        def status = sh(script: 'mvn clean test', returnStatus: true)
-                        if (status != 0) {
-                            echo "Maven tests failed, but continuing the pipeline. "
-                        }
+                    catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
+                        sh 'mvn clean test'
                     }
                 }
             }
@@ -114,7 +111,6 @@ pipeline {
     post {
         always {
             dir('FullStackApp'){
-                junit 'target/surefire-reports/**/*.xml'
                 jacoco execPattern: 'target/jacoco.exec'
             }
         }
