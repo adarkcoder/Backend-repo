@@ -9,7 +9,7 @@ pipeline {
         AWS_CREDENTIALS_ID = 'aws-credentials-id'
         DOCKER_IMAGE = 'public.ecr.aws/e8n4i2w8/backend:latest'
         AWS_REGION = 'us-east-1'
-        DEPLOYMENT_NAME = "frontend"
+        DEPLOYMENT_NAME = "backend"
     }
 
     stages {
