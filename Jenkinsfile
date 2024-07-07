@@ -100,7 +100,7 @@ pipeline {
 
     post {
         always {
-            dir('Backend'){
+            dir('FullStackApp'){
                 junit 'target/surefire-reports/*.xml'
                 jacoco execPattern: 'target/jacoco.exec'
             }
