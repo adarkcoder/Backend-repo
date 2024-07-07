@@ -97,7 +97,8 @@ pipeline {
 
     post {
         always {
-            // Clean up any resources or perform cleanup tasks
+            junit 'target/surefire-reports/*.xml'
+            jacoco execPattern: 'target/jacoco.exec'
             cleanWs()
         }
     }
