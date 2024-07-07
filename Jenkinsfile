@@ -19,7 +19,7 @@ pipeline {
             }
         }
 
-        
+
         stage('Checkout') {
             steps {
                 git 'https://github.com/adarkcoder/Backend-repo.git'
@@ -114,7 +114,7 @@ pipeline {
     post {
         always {
             dir('FullStackApp'){
-                junit 'target/surefire-reports/*.xml'
+                junit 'target/surefire-reports/'
                 jacoco execPattern: 'target/jacoco.exec'
             }
         }
