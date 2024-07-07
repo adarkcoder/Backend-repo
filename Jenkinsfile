@@ -56,7 +56,7 @@ pipeline {
                                 -Dsonar.sources=src/main/java \
                                 -Dsonar.tests=src/test/java/com/ \
                                 -Dsonar.java.binaries=target/test-classes/ \
-                                -Dsonar.junit.reportsPath=target/surefire-reports/ \
+                                -Dsonar.junit.reportsPath=target/surefire-reports/**/*.xml \
                                 -Dsonar.jacoco.reportsPath=target/coverage-reports/jacoco-ut.exec \
                                 -Dsonar.host.url=http://sonarqube.default.svc.cluster.local/'''  
                         }
@@ -114,7 +114,7 @@ pipeline {
     post {
         always {
             dir('FullStackApp'){
-                junit 'target/surefire-reports/'
+                junit 'target/surefire-reports/**/*.xml'
                 jacoco execPattern: 'target/jacoco.exec'
             }
         }
